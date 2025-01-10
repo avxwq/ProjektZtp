@@ -26,7 +26,15 @@ namespace ProjektZtp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            gameForm.ShowCurrentControl(new MainGameControl(gameForm));
+            if (comboBox2.Text == "Advanced")
+            {
+                gameForm.ShowCurrentControl(new ChooseGamePropertiesControl(gameForm));
+            }
+            else
+            {
+                gameForm.ShowCurrentControl(new MainGameControl(gameForm));
+            }
         }
+
     }
 }
