@@ -12,12 +12,13 @@ namespace ProjektZtp
 {
     public partial class BattleshipGameForm : Form
     {
-        UserControl currentControl;
+        private UserControl currentControl;
+        GameBuilder gameBuilder = new GameBuilder();
         public BattleshipGameForm()
         {
             InitializeComponent();
 
-            currentControl = new ChooseOpponentControl(this);
+            currentControl = new ChooseOpponentControl(this, gameBuilder);
             this.Controls.Add(currentControl);
         }
 

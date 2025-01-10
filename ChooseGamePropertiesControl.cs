@@ -12,11 +12,13 @@ namespace ProjektZtp
 {
     public partial class ChooseGamePropertiesControl : UserControl
     {
-        BattleshipGameForm gameForm;
-        public ChooseGamePropertiesControl(BattleshipGameForm battleshipGameForm)
+        private readonly BattleshipGameForm gameForm;
+        private readonly GameBuilder builder;
+        public ChooseGamePropertiesControl(BattleshipGameForm battleshipGameForm, GameBuilder builder)
         {
             InitializeComponent();
             gameForm = battleshipGameForm;
+            this.builder = builder;
         }
 
         private void label1_Click(object sender, EventArgs e)

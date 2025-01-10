@@ -12,11 +12,13 @@ namespace ProjektZtp
 {
     public partial class AiSetupControl : UserControl
     {
-        BattleshipGameForm gameForm;
-        public AiSetupControl(BattleshipGameForm battleshipGameForm)
+        private readonly BattleshipGameForm gameForm;
+        private readonly GameBuilder builder;
+        public AiSetupControl(BattleshipGameForm battleshipGameForm, GameBuilder builder)
         {
             InitializeComponent();
             gameForm = battleshipGameForm;
+            this.builder = builder;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -28,9 +30,9 @@ namespace ProjektZtp
         {
             if (comboBox2.Text == "Advanced")
             {
-                gameForm.ShowCurrentControl(new ChooseGamePropertiesControl(gameForm));
+                gameForm.ShowCurrentControl(new ChooseGamePropertiesControl(gameForm, builder));
             }
-            else
+            else if (comboBox2.Text == "Standard")
             {
                 gameForm.ShowCurrentControl(new MainGameControl(gameForm));
             }
