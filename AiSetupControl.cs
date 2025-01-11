@@ -34,6 +34,7 @@ namespace ProjektZtp
             }
             else if (comboBox2.Text == "Standard")
             {
+                builder.SetBoardSize(10);
                 gameForm.ShowCurrentControl(new MainGameControl(gameForm));
             }
         }

@@ -83,6 +83,12 @@
     <Compile Include="MainGameControl.Designer.cs">
       <DependentUpon>MainGameControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlaceShipsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlaceShipsControl.Designer.cs">
+      <DependentUpon>PlaceShipsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AiSetupControl.resx">
@@ -102,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainGameControl.resx">
       <DependentUpon>MainGameControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaceShipsControl.resx">
+      <DependentUpon>PlaceShipsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

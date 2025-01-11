@@ -8,11 +8,42 @@ namespace ProjektZtp
 {
     public class Game
     {
+        private Player player1;
+        private Player player2;
+        private Board board;
+        private int BoardSize;
+        private GameMode mode;
+        public Game(Player player1, Player player2, int BoardSize, GameMode mode)
+        {
+            this.player1 = player1;
+            this.player2 = player2;
+            this.mode = mode;
+            this.BoardSize = BoardSize;
+        }
+        public int GetBoardSize()
+        {
+            return BoardSize;
+        }
+    }
+
+    public class Board
+    {
     }
 
     public abstract class Player
     {
 
+    }
+    public class Ship
+    {
+        public string Name { get; }
+        public int Size { get; }
+
+        public Ship(string name, int size)
+        {
+            Name = name;
+            Size = size;
+        }
     }
 
     public enum GameMode
@@ -28,14 +59,26 @@ namespace ProjektZtp
         void SetBackgroundColor(string color);
         void SetPlayer1(Player player);
         void SetPlayer2(Player player);
-        void GetGame();
+        void BuildGame();
+        Game GetGame();
     }
 
     public class GameBuilder : IGameBuilder
     {
-        public void GetGame()
+        private GameMode gameMode;
+        private Player player1;
+        private Player player2;
+        public int boardSize;
+        private Game game;
+
+        public void BuildGame()
         {
-            throw new NotImplementedException();
+            game = new Game(player1, player2, boardSize, gameMode);
+        }
+
+        public Game GetGame()
+        {
+            return game;
         }
 
         public void SetAiStrategy()
@@ -50,12 +93,12 @@ namespace ProjektZtp
 
         public void SetBoardSize(int size)
         {
-            throw new NotImplementedException();
+            this.boardSize = size;
         }
 
         public void SetGameMode(GameMode gameMode)
         {
-            throw new NotImplementedException();
+            this.gameMode = gameMode;
         }
 
         public void SetPlayer1(Player player)
