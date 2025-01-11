@@ -26,6 +26,18 @@ namespace ProjektZtp
             if (comboBox1.Text == "Standard")
             {
                builder.SetBoardSize(10);
+               Fleet fleet = new Fleet("Player 1 Fleet");
+                fleet.Add(new BattleCruiser("Battle cruiser"));
+               fleet.Add(new Warship("Warship"));
+               fleet.Add(new AircraftCarrier("Aircraft carrier"));
+               fleet.Add(new Frigate("Frigate"));
+               Fleet fleet2 = new Fleet("Player 2 Fleet");
+               fleet2.Add(new BattleCruiser("Battle cruiser"));
+               fleet2.Add(new Warship("Warship"));
+               fleet2.Add(new AircraftCarrier("Aircraft carrier"));
+               fleet2.Add(new Frigate("Frigate"));
+                builder.SetPlayer1Fleet(fleet);
+                builder.SetPlayer2Fleet(fleet2);
                builder.BuildGame();
                gameForm.ShowCurrentControl(new PlaceShipsControl(builder, gameForm)); 
             }

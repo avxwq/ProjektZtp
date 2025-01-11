@@ -10,7 +10,7 @@ namespace ProjektZtp
         private int GridSize;
         private const int CellSize = 30;
         private Button[,] gridButtons;
-        private List<Ship> shipsToPlace;
+        private List<FleetComponent> shipsToPlace;
         private Ship currentShip;
         private bool isHorizontal = true;
         private GameBuilder gameBuilder;
@@ -51,13 +51,8 @@ namespace ProjektZtp
 
         private void InitializeShips()
         {
-            shipsToPlace = new List<Ship>
-            {
-                new BattleCruiser("Battle Cruiser"),
-                new Frigate("Frigate"),
-                new Frigate ("Warship"),
-                new Frigate ("Aircraft Carrier")
-            };
+            Player player = game.GetPlayer1();
+            shipsToPlace = player.PlayerFleet.GetComponents();
 
             SelectNextShip();
         }
@@ -66,7 +61,7 @@ namespace ProjektZtp
         {
             if (shipsToPlace.Count > 0)
             {
-                currentShip = shipsToPlace[0];
+                currentShip = (Ship)shipsToPlace[0];
                 shipsToPlace.RemoveAt(0);
                 MessageBox.Show($"Place your {currentShip.Name} (size: {currentShip.Size})", "Ship Placement");
             }

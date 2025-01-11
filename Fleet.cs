@@ -21,7 +21,7 @@ namespace ProjektZtp
             throw new NotImplementedException();
         }
 
-        public virtual IEnumerable<FleetComponent> GetComponents()
+        public virtual List<FleetComponent> GetComponents()
         {
             throw new NotImplementedException();
         }
@@ -97,7 +97,7 @@ namespace ProjektZtp
             _components.Remove(component);
         }
 
-        public override IEnumerable<FleetComponent> GetComponents()
+        public override List<FleetComponent> GetComponents()
         {
             return _components;
         }

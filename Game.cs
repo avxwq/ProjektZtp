@@ -12,7 +12,7 @@ namespace ProjektZtp
         private Player player1;
         private Player player2;
         private Board board;
-        private int BoardSize;
+        public int BoardSize;
         private GameMode mode;
         public Game(Player player1, Player player2, int BoardSize, GameMode mode)
         {
@@ -25,13 +25,17 @@ namespace ProjektZtp
         {
             return BoardSize;
         }
+
+        public Player GetPlayer1()
+        {
+            return player1;
+        }
+        public Player GetPlayer2()
+        {
+            return player2;
+        }
     }
 
-    public enum GameMode
-    {
-        vsAi,
-        vsHuman
-    }
     public interface IGameBuilder
     {
         void SetGameMode(GameMode gameMode);
@@ -40,6 +44,8 @@ namespace ProjektZtp
         void SetBackgroundColor(Color color);
         void SetPlayer1(Player player);
         void SetPlayer2(Player player);
+        void SetPlayer1Fleet(Fleet fleet);
+        void SetPlayer2Fleet(Fleet fleet);
         void BuildStandardFleet();
         void BuildAdvancedFleet(Fleet fleet);
         void BuildGame();
@@ -101,5 +107,20 @@ namespace ProjektZtp
         {
 
         }
+
+        public void SetPlayer1Fleet(Fleet fleet)
+        {
+            player1.PlayerFleet = fleet;
+        }
+
+        public void SetPlayer2Fleet(Fleet fleet)
+        {
+            player2.PlayerFleet = fleet;
+        }
+    }
+    public enum GameMode
+    {
+        vsAi,
+        vsHuman
     }
 }

@@ -13,8 +13,13 @@ namespace ProjektZtp
         private Board PlayerBoard;
 
         public abstract Position MakeShot();
-        public abstract bool PlaceShips(Fleet fleet);
+        public abstract bool PlaceShips();
         public abstract bool AddShipToFleet(Ship ship);
+
+        public void SetPlayerFleet(Fleet fleet)
+        {
+            PlayerFleet = fleet;
+        }
 
         public void ResetBoard() 
         {
@@ -39,7 +44,7 @@ namespace ProjektZtp
             throw new NotImplementedException();
         }
 
-        public override bool PlaceShips(Fleet fleet)
+        public override bool PlaceShips()
         {
             throw new NotImplementedException();
         }
@@ -57,7 +62,7 @@ namespace ProjektZtp
             throw new NotImplementedException();
         }
 
-        public override bool PlaceShips(Fleet fleet)
+        public override bool PlaceShips()
         {
             throw new NotImplementedException();
         }
