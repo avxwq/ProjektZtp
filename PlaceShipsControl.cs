@@ -53,10 +53,10 @@ namespace ProjektZtp
         {
             shipsToPlace = new List<Ship>
             {
-                new Ship("Battle Cruiser", 4),
-                new Ship("Frigate", 3),
-                new Ship("Warship", 3),
-                new Ship("Aircraft Carrier", 5)
+                new BattleCruiser("Battle Cruiser"),
+                new Frigate("Frigate"),
+                new Frigate ("Warship"),
+                new Frigate ("Aircraft Carrier")
             };
 
             SelectNextShip();

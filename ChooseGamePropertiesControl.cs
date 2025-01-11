@@ -30,5 +30,14 @@ namespace ProjektZtp
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int BoardSize = int.Parse(comboBox1.Text);
+            int numBattleCruisers = int.Parse(comboBox2.Text);
+            int numFrigates = int.Parse(comboBox3.Text);
+            int numWarships = int.Parse(comboBox4.Text);
+            int numAircraftCarriers = int.Parse(comboBox5.Text);
+        }
     }
 }

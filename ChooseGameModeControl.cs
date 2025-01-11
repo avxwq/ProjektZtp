@@ -28,7 +28,6 @@ namespace ProjektZtp
                builder.SetBoardSize(10);
                builder.BuildGame();
                gameForm.ShowCurrentControl(new PlaceShipsControl(builder, gameForm)); 
-//               gameForm.ShowCurrentControl(new MainGameControl(gameForm)); 
             }
             else if (comboBox1.Text == "Advanced")
             {
