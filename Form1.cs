@@ -14,12 +14,14 @@ namespace ProjektZtp
     {
         private UserControl currentControl;
         GameBuilder gameBuilder = new GameBuilder();
+
         public BattleshipGameForm()
         {
             InitializeComponent();
 
             currentControl = new ChooseOpponentControl(this, gameBuilder);
             this.Controls.Add(currentControl);
+            CenterControl(currentControl); // Wycentrowanie kontrolki
         }
 
         public void ShowCurrentControl(UserControl control)
@@ -27,7 +29,25 @@ namespace ProjektZtp
             this.Controls.Remove(currentControl);
             currentControl = control;
             this.Controls.Add(currentControl);
+            CenterControl(currentControl); // Wycentrowanie nowej kontrolki
         }
 
+        private void CenterControl(Control control)
+        {
+            // Obliczanie środka formularza i ustawianie lokalizacji kontrolki
+            control.Left = (this.ClientSize.Width - control.Width) / 2;
+            control.Top = (this.ClientSize.Height - control.Height) / 2;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            // Upewnij się, że aktualna kontrolka pozostaje wycentrowana przy zmianie rozmiaru okna
+            if (currentControl != null)
+            {
+                CenterControl(currentControl);
+            }
+        }
     }
 }
