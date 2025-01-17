@@ -8,7 +8,11 @@ namespace ProjektZtp
 {
     public class ShotResult
     {
+        public bool IsHit { get; set; }
 
+        public bool IsSunk { get; set; }
+
+        public string ShipName { get; set; }
     }
 
 }

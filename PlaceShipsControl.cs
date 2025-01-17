@@ -7,44 +7,45 @@ namespace ProjektZtp
 {
     public partial class PlaceShipsControl : UserControl
     {
-        private int GridSize;
         private const int CellSize = 30;
-        private Button[,] gridButtons;
+        private readonly Board GameBoard;
+        private readonly Stack<ICommand> commandStack;
         private List<FleetComponent> shipsToPlace;
         private Ship currentShip;
         private bool isHorizontal = true;
-        private GameBuilder gameBuilder;
-        private BattleshipGameForm battleshipGameForm;
         private Game game;
 
         public PlaceShipsControl(GameBuilder gameBuilder, BattleshipGameForm battleshipGameForm)
         {
-            this.gameBuilder = gameBuilder;
-            this.battleshipGameForm = battleshipGameForm;
+            GameBoard = new Board(gameBuilder.GetGame().GetBoardSize());
+            commandStack = new Stack<ICommand>();
             game = gameBuilder.GetGame();
-            GridSize = game.GetBoardSize();
+
             InitializeComponent();
-            InitializeGrid();
+            InitializeGridUI();
             InitializeShips();
         }
 
-        private void InitializeGrid()
+        private void InitializeGridUI()
         {
-            gridButtons = new Button[GridSize, GridSize];
-            for (int row = 0; row < GridSize; row++)
+            for (int x = 0; x < GameBoard.boardSize; x++)
             {
-                for (int col = 0; col < GridSize; col++)
+                for (int y = 0; y < GameBoard.boardSize; y++)
                 {
                     var button = new Button
                     {
                         Size = new Size(CellSize, CellSize),
-                        Location = new Point(col * CellSize, row * CellSize),
+                        Location = new Point(y * CellSize, x * CellSize),
                         BackColor = Color.LightBlue,
-                        Tag = new Point(row, col)
+                        Tag = new Position(x, y)
                     };
+
                     button.Click += GridButton_Click;
+
                     Controls.Add(button);
-                    gridButtons[row, col] = button;
+
+                    // Połącz UI z logiką planszy
+                    GameBoard.GetCell(new Position(x, y)).Button = button;
                 }
             }
         }
@@ -79,10 +80,16 @@ namespace ProjektZtp
             var button = sender as Button;
             if (button == null) return;
 
-            var position = (Point)button.Tag;
-            if (CanPlaceShip(position))
+            // Pobranie pozycji z Tag
+            var position = (Position)button.Tag;
+
+            var command = new PlaceShipCommand(GameBoard, currentShip, position, isHorizontal);
+
+            // Sprawdzenie, czy można wykonać komendę
+            if (command.CanExecute())
             {
-                PlaceShip(position);
+                command.Execute();
+                commandStack.Push(command);
                 SelectNextShip();
             }
             else
@@ -91,48 +98,28 @@ namespace ProjektZtp
             }
         }
 
-        private bool CanPlaceShip(Point start)
-        {
-            for (int i = 0; i < currentShip.Size; i++)
-            {
-                int row = isHorizontal ? start.X : start.X + i;
-                int col = isHorizontal ? start.Y + i : start.Y;
 
-                if (row >= GridSize || col >= GridSize || gridButtons[row, col].BackColor == Color.Gray)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private void PlaceShip(Point start)
-        {
-            for (int i = 0; i < currentShip.Size; i++)
-            {
-                int row = isHorizontal ? start.X : start.X + i;
-                int col = isHorizontal ? start.Y + i : start.Y;
-                gridButtons[row, col].BackColor = Color.Gray;
-            }
-        }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
             var toggleOrientationButton = new Button
             {
                 Text = "Toggle Orientation",
-                Location = new Point(GridSize * CellSize + 10, 10),
+                Location = new Point(GameBoard.boardSize * CellSize + 10, 10),
                 Size = new Size(120, 30)
             };
+
             toggleOrientationButton.Click += (s, args) =>
             {
-                isHorizontal = !isHorizontal;
+                isHorizontal = !isHorizontal; 
                 MessageBox.Show($"Orientation: {(isHorizontal ? "Horizontal" : "Vertical")}", "Orientation Toggled");
             };
+
             Controls.Add(toggleOrientationButton);
         }
-
     }
+
 }
 
