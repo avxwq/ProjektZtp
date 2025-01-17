@@ -21,6 +21,11 @@ namespace ProjektZtp
             PlayerFleet = fleet;
         }
 
+        public void SetBoard(Board board)
+        {
+            PlayerBoard = board;
+        }
+
         public void ResetBoard() 
         {
 

@@ -14,12 +14,14 @@ namespace ProjektZtp
         private Ship currentShip;
         private bool isHorizontal = true;
         private Game game;
+        private BattleshipGameForm battleshipGameForm;
 
         public PlaceShipsControl(GameBuilder gameBuilder, BattleshipGameForm battleshipGameForm)
         {
             GameBoard = new Board(gameBuilder.GetGame().GetBoardSize());
             commandStack = new Stack<ICommand>();
             game = gameBuilder.GetGame();
+            this.battleshipGameForm = battleshipGameForm;
 
             InitializeComponent();
             InitializeGridUI();
@@ -118,6 +120,12 @@ namespace ProjektZtp
             };
 
             Controls.Add(toggleOrientationButton);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MainGameControl control = new MainGameControl(battleshipGameForm, game);
+            battleshipGameForm.ShowCurrentControl(control);
         }
     }
 
