@@ -14,6 +14,7 @@ namespace ProjektZtp
     {
         private BattleshipGameForm gameForm;
         private GameBuilder builder;
+        private Game game; 
         public ChooseGameModeControl(BattleshipGameForm gameForm, GameBuilder builder)
         {
             InitializeComponent();
