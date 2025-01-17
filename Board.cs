@@ -80,6 +80,7 @@ namespace ProjektZtp
         {
             return cells[position.X, position.Y];
         }
+
     }
 
     public class Cell

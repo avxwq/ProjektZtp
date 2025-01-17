@@ -26,6 +26,11 @@ namespace ProjektZtp
             return BoardSize;
         }
 
+        public bool IsGameOver()
+        {
+            return false;
+        }
+
         public Player GetPlayer1()
         {
             return player1;
@@ -84,6 +89,10 @@ namespace ProjektZtp
         public void SetBoardSize(int size)
         {
             this.boardSize = size;
+            Board board1 = new Board(boardSize);
+            Board board2 = new Board(boardSize);
+            player1.SetBoard(board1);
+            player2.SetBoard(board2);
         }
 
         public void SetGameMode(GameMode gameMode)
