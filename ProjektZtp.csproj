@@ -53,12 +53,6 @@
       <DependentUpon>AiSetupControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Board.cs" />
-    <Compile Include="ChooseGameModeControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ChooseGameModeControl.Designer.cs">
-      <DependentUpon>ChooseGameModeControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="ChooseGamePropertiesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,9 +91,6 @@
     <Compile Include="ShotResult.cs" />
     <EmbeddedResource Include="AiSetupControl.resx">
       <DependentUpon>AiSetupControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChooseGameModeControl.resx">
-      <DependentUpon>ChooseGameModeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseGamePropertiesControl.resx">
       <DependentUpon>ChooseGamePropertiesControl.cs</DependentUpon>

@@ -34,8 +34,9 @@ namespace ProjektZtp
             }
             else if (comboBox2.Text == "Standard")
             {
-                builder.SetBoardSize(10);
-                gameForm.ShowCurrentControl(new MainGameControl(gameForm));
+                GameDirector director = new GameDirector(builder);
+                director.CreateStandardGame("Gracz 1");
+                gameForm.ShowCurrentControl(new PlaceShipsControl(builder, gameForm));
             }
         }
 
