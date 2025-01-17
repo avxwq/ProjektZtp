@@ -30,6 +30,15 @@ namespace ProjektZtp
 
         private void InitializeGridUI()
         {
+            // Oblicz szerokość i wysokość planszy
+            int boardWidth = GameBoard.boardSize * CellSize;
+            int boardHeight = GameBoard.boardSize * CellSize;
+
+            // Oblicz pozycję początkową, aby wyśrodkować planszę w kontrolce
+            int startX = (this.Width - boardWidth) / 2;
+            int startY = (this.Height - boardHeight) / 2;
+
+            // Tworzenie przycisków siatki
             for (int x = 0; x < GameBoard.boardSize; x++)
             {
                 for (int y = 0; y < GameBoard.boardSize; y++)
@@ -37,7 +46,7 @@ namespace ProjektZtp
                     var button = new Button
                     {
                         Size = new Size(CellSize, CellSize),
-                        Location = new Point(y * CellSize, x * CellSize),
+                        Location = new Point(startX + y * CellSize, startY + x * CellSize),
                         BackColor = Color.LightBlue,
                         Tag = new Position(x, y)
                     };
@@ -100,34 +109,57 @@ namespace ProjektZtp
             }
         }
 
-
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
+            int boardWidth = GameBoard.boardSize * CellSize;
+            int startX = (this.Width - boardWidth) / 2;
+
             var toggleOrientationButton = new Button
             {
                 Text = "Toggle Orientation",
-                Location = new Point(GameBoard.boardSize * CellSize + 10, 10),
-                Size = new Size(120, 30)
+                Size = new Size(120, 30),
+                Location = new Point(startX + boardWidth / 2 - 60, 10) // Wyśrodkowanie względem planszy
             };
 
             toggleOrientationButton.Click += (s, args) =>
             {
-                isHorizontal = !isHorizontal; 
+                isHorizontal = !isHorizontal;
                 MessageBox.Show($"Orientation: {(isHorizontal ? "Horizontal" : "Vertical")}", "Orientation Toggled");
             };
 
             Controls.Add(toggleOrientationButton);
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
             MainGameControl control = new MainGameControl(battleshipGameForm, game);
             battleshipGameForm.ShowCurrentControl(control);
         }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            CenterBoard();
+        }
+
+        private void CenterBoard()
+        {
+            int boardWidth = GameBoard.boardSize * CellSize;
+            int boardHeight = GameBoard.boardSize * CellSize;
+
+            int startX = (this.Width - boardWidth) / 2;
+            int startY = (this.Height - boardHeight) / 2;
+
+            foreach (Control control in Controls)
+            {
+                if (control is Button button && button.Tag is Position position)
+                {
+                    button.Location = new Point(startX + position.Y * CellSize, startY + position.X * CellSize);
+                }
+            }
+        }
     }
-
 }
-
