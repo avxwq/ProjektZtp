@@ -46,6 +46,8 @@ namespace ProjektZtp
         void SetPlayer2(Player player);
         void SetPlayer1Fleet(Fleet fleet);
         void SetPlayer2Fleet(Fleet fleet);
+        void SetPlayer1Board(int boardSize);
+        void SetPlayer2Board(int boardSize);
         void BuildStandardFleet();
         void BuildAdvancedFleet(Fleet fleet);
         void BuildGame();
@@ -110,12 +112,55 @@ namespace ProjektZtp
 
         public void SetPlayer1Fleet(Fleet fleet)
         {
-            player1.PlayerFleet = fleet;
+            player1.SetPlayerFleet(fleet);
         }
 
         public void SetPlayer2Fleet(Fleet fleet)
         {
-            player2.PlayerFleet = fleet;
+            player2.SetPlayerFleet(fleet);
+        }
+
+        public void SetPlayer1Board(int Boardsize)
+        {
+            player1.SetPlayerBoard(Boardsize);
+        }
+
+        public void SetPlayer2Board(int Boardsize)
+        {
+            player1.SetPlayerBoard(Boardsize);
+        }
+    }
+
+    public class GameDirector
+    {
+        private IGameBuilder _builder;
+
+        public GameDirector(IGameBuilder builder)
+        {
+            _builder = builder;
+        }
+        public void CreateStandardGame(string playerName)
+        {
+            Player player = new PlayerHuman(playerName);
+            Player player2 = new PlayerAi();
+            _builder.SetPlayer1(player);
+            _builder.SetPlayer2(player2);
+            _builder.SetBoardSize(10);
+            Fleet fleet = new Fleet();
+            fleet.Add(new BattleCruiser());
+            fleet.Add(new Warship());
+            fleet.Add(new AircraftCarrier());
+            fleet.Add(new Frigate());
+            Fleet fleet2 = new Fleet();
+            fleet2.Add(new BattleCruiser());
+            fleet2.Add(new Warship());
+            fleet2.Add(new AircraftCarrier());
+            fleet2.Add(new Frigate());
+            _builder.SetPlayer1Fleet(fleet);
+            _builder.SetPlayer2Fleet(fleet2);
+            _builder.SetPlayer1Board(10);
+            _builder.SetPlayer2Board(10);
+            _builder.BuildGame();
         }
     }
     public enum GameMode

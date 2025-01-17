@@ -41,28 +41,28 @@ namespace ProjektZtp
 
             builder.SetBoardSize(BoardSize);
 
-            Fleet player1Fleet = new Fleet("Player 1 Fleet");
-            Fleet player2Fleet = new Fleet("Player 2 Fleet");
+            Fleet player1Fleet = new Fleet();
+            Fleet player2Fleet = new Fleet();
 
             for (int i = 0; i < numBattleCruisers; i++)
             {
-                player1Fleet.Add(new BattleCruiser("Battle Cruiser"));
-                player2Fleet.Add(new BattleCruiser("Battle Cruiser"));
+                player1Fleet.Add(new BattleCruiser());
+                player2Fleet.Add(new BattleCruiser());
             }
             for (int i = 0; i < numFrigates; i++)
             {
-                player1Fleet.Add(new Frigate("Frigate"));
-                player2Fleet.Add(new Frigate("Battle Cruiser"));
+                player1Fleet.Add(new Frigate());
+                player2Fleet.Add(new Frigate());
             }
             for (int i = 0; i < numWarships; i++)
             {
-                player1Fleet.Add(new Warship("Warship"));
-                player2Fleet.Add(new Warship("Battle Cruiser"));
+                player1Fleet.Add(new Warship());
+                player2Fleet.Add(new Warship());
             }
             for (int i = 0; i < numAircraftCarriers; i++)
             {
-                player1Fleet.Add(new AircraftCarrier("Aircraft Carrier"));
-                player2Fleet.Add(new AircraftCarrier("Battle Cruiser"));
+                player1Fleet.Add(new AircraftCarrier());
+                player2Fleet.Add(new AircraftCarrier());
             }
 
             builder.SetPlayer1Fleet(player1Fleet);

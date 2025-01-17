@@ -9,17 +9,17 @@ namespace ProjektZtp
     {
         private const int CellSize = 30;
         private readonly Board GameBoard;
-        private readonly Stack<ICommand> commandStack;
-        private List<FleetComponent> shipsToPlace;
         private Ship currentShip;
+        private List<FleetComponent> shipsToPlace;
         private bool isHorizontal = true;
         private Game game;
+        private Invoker invoker;  // Dodanie referencji do Invokera
 
         public PlaceShipsControl(GameBuilder gameBuilder, BattleshipGameForm battleshipGameForm)
         {
             GameBoard = new Board(gameBuilder.GetGame().GetBoardSize());
-            commandStack = new Stack<ICommand>();
             game = gameBuilder.GetGame();
+            invoker = new Invoker();  // Inicjalizacja Invokera
 
             InitializeComponent();
             InitializeGridUI();
@@ -64,7 +64,7 @@ namespace ProjektZtp
             {
                 currentShip = (Ship)shipsToPlace[0];
                 shipsToPlace.RemoveAt(0);
-                MessageBox.Show($"Place your {currentShip.Name} (size: {currentShip.Size})", "Ship Placement");
+                MessageBox.Show($"Place your ship (size: {currentShip.Size})", "Ship Placement");
             }
             else
             {
@@ -89,7 +89,9 @@ namespace ProjektZtp
             if (command.CanExecute())
             {
                 command.Execute();
-                commandStack.Push(command);
+
+                // Użycie Invokera do zapisania wykonanej komendy
+                invoker.ExecuteCommand(command);
                 SelectNextShip();
             }
             else
@@ -97,8 +99,6 @@ namespace ProjektZtp
                 MessageBox.Show("Invalid position for ship placement.", "Error");
             }
         }
-
-
 
         protected override void OnLoad(EventArgs e)
         {
@@ -113,13 +113,14 @@ namespace ProjektZtp
 
             toggleOrientationButton.Click += (s, args) =>
             {
-                isHorizontal = !isHorizontal; 
+                isHorizontal = !isHorizontal;
                 MessageBox.Show($"Orientation: {(isHorizontal ? "Horizontal" : "Vertical")}", "Orientation Toggled");
             };
 
             Controls.Add(toggleOrientationButton);
         }
     }
+
 
 }
 

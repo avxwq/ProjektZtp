@@ -13,6 +13,55 @@ namespace ProjektZtp
         void Undo();
     }
 
+    public class Invoker
+    {
+        private readonly Stack<ICommand> commandStack;
+        private readonly Stack<ICommand> redoStack;
+
+        public Invoker()
+        {
+            commandStack = new Stack<ICommand>();
+            redoStack = new Stack<ICommand>();
+        }
+
+        // Wykonanie komendy
+        public void ExecuteCommand(ICommand command)
+        {
+            command.Execute();
+            commandStack.Push(command);  // Dodanie komendy do historii wykonanych komend
+            redoStack.Clear();  // Kasujemy stos redo, ponieważ wykonano nową komendę
+        }
+
+        // Cofnięcie ostatniej komendy
+        public void Undo()
+        {
+            if (commandStack.Count > 0)
+            {
+                var command = commandStack.Pop();
+                command.Undo();
+                redoStack.Push(command);  // Dodajemy do stosu redo
+            }
+            else
+            {
+                Console.WriteLine("No commands to undo.");
+            }
+        }
+
+        // Ponowne wykonanie ostatniej cofniętej komendy
+        public void Redo()
+        {
+            if (redoStack.Count > 0)
+            {
+                var command = redoStack.Pop();
+                command.Execute();
+                commandStack.Push(command);  // Ponownie dodajemy do stosu undo
+            }
+            else
+            {
+                Console.WriteLine("No commands to redo.");
+            }
+        }
+    }
 
     public class PlaceShipCommand : ICommand
     {
