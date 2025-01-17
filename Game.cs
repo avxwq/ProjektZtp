@@ -118,6 +118,37 @@ namespace ProjektZtp
             player2.PlayerFleet = fleet;
         }
     }
+
+    public class GameDirector
+    {
+        private IGameBuilder _builder;
+
+        public GameDirector(IGameBuilder builder)
+        {
+            _builder = builder;
+        }
+        public void CreateStandardGame(string playerName)
+        {
+            Player player = new PlayerHuman(playerName);
+            Player player2 = new PlayerAi();
+            _builder.SetPlayer1(player);
+            _builder.SetPlayer2(player2);
+            _builder.SetBoardSize(10);
+            Fleet fleet = new Fleet("Player 1 Fleet");
+            fleet.Add(new BattleCruiser("Battle cruiser"));
+            fleet.Add(new Warship("Warship"));
+            fleet.Add(new AircraftCarrier("Aircraft carrier"));
+            fleet.Add(new Frigate("Frigate"));
+            Fleet fleet2 = new Fleet("Player 2 Fleet");
+            fleet2.Add(new BattleCruiser("Battle cruiser"));
+            fleet2.Add(new Warship("Warship"));
+            fleet2.Add(new AircraftCarrier("Aircraft carrier"));
+            fleet2.Add(new Frigate("Frigate"));
+            _builder.SetPlayer1Fleet(fleet);
+            _builder.SetPlayer2Fleet(fleet2);
+            _builder.BuildGame();
+        }
+    }
     public enum GameMode
     {
         vsAi,

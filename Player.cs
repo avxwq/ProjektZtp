@@ -34,6 +34,10 @@ namespace ProjektZtp
 
     public class PlayerHuman : Player
     {
+        public PlayerHuman(string username)
+        {
+            Username = username;
+        }
         public override bool AddShipToFleet(Ship ship)
         {
             throw new NotImplementedException();
