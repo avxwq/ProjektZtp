@@ -13,6 +13,89 @@ namespace ProjektZtp
         void Undo();
     }
 
+    public class Invoker
+    {
+        private readonly Stack<ICommand> placeCommandStack;  // Stos dla komend umieszczania statków
+        private readonly Stack<ICommand> shotCommandStack;   // Stos dla komend strzałów
+        private readonly Stack<ICommand> redoPlaceStack;     // Stos redo dla komend umieszczania statków
+        private readonly Stack<ICommand> redoShotStack;      // Stos redo dla komend strzałów
+
+        public Invoker()
+        {
+            placeCommandStack = new Stack<ICommand>();
+            shotCommandStack = new Stack<ICommand>();
+            redoPlaceStack = new Stack<ICommand>();
+            redoShotStack = new Stack<ICommand>();
+        }
+
+        // Wykonanie komendy (umieszczania statku lub strzału)
+        public void ExecuteCommand(ICommand command)
+        {
+            command.Execute();
+
+            if (command is PlaceShipCommand)
+            {
+                placeCommandStack.Push(command);  // Dodanie do stosu dla komend umieszczania statków
+            }
+            //else if (command is MakeShotCommand)
+            //{
+            //    shotCommandStack.Push(command);   // Dodanie do stosu dla komend strzałów
+            //}
+
+            //// Kasowanie stosów redo po wykonaniu nowej komendy
+            //redoPlaceStack.Clear();
+            //redoShotStack.Clear();
+        }
+
+        // Cofnięcie ostatniej komendy (umieszczania statku lub strzału)
+        public bool Undo()
+        {
+            if (placeCommandStack.Count > 0)
+            {
+                var command = placeCommandStack.Pop();
+                command.Undo();
+                redoPlaceStack.Push(command);
+                return true;//Dodanie do stosu redo dla umieszczania statków
+            }
+            else if (shotCommandStack.Count > 0)
+            {
+                var command = shotCommandStack.Pop();
+                command.Undo();
+                redoShotStack.Push(command);
+                return true;// Dodanie do stosu redo dla strzałów
+            }
+            else
+            {
+                Console.WriteLine("No commands to undo.");
+                return false;
+            }
+        }
+
+        // Ponowne wykonanie ostatniej cofniętej komendy
+        public bool Redo()
+        {
+            if (redoPlaceStack.Count > 0)
+            {
+                var command = redoPlaceStack.Pop();
+                command.Execute();
+                placeCommandStack.Push(command);
+                return true;// Dodanie do stosu umieszczania statków
+            }
+            else if (redoShotStack.Count > 0)
+            {
+                var command = redoShotStack.Pop();
+                command.Execute();
+                shotCommandStack.Push(command);
+                return true;// Dodanie do stosu strzałów
+            }
+            else
+            {
+                Console.WriteLine("No commands to redo.");
+                return false;
+            }
+        }
+    }
+
 
     public class PlaceShipCommand : ICommand
     {
