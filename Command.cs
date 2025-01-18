@@ -33,9 +33,11 @@ namespace ProjektZtp
         {
             command.Execute();
 
+
             if (command is PlaceShipCommand)
             {
-                placeCommandStack.Push(command);  // Dodanie do stosu dla komend umieszczania statków
+                placeCommandStack.Push(command);
+                redoPlaceStack.Clear();// Dodanie do stosu dla komend umieszczania statków
             }
             //else if (command is MakeShotCommand)
             //{

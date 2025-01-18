@@ -14,12 +14,10 @@ namespace ProjektZtp
         public Board PlayerBoard { get; private set; }
         public Invoker Invoker { get; private set; }
 
-
-
         public Player(string username)
         {
-            Username = username;  // Nazwa będzie ustawiona na podaną wartość
-            Invoker = new Invoker();    // Inicjalizowanie Invokera
+            Username = username;
+            Invoker = new Invoker();   
         }
 
         public abstract Position MakeShot();
@@ -27,22 +25,17 @@ namespace ProjektZtp
         {
             var command = new PlaceShipCommand(PlayerBoard, currentShip, position, isHorizontal);
             if (command.CanExecute())
-            {
-                // Wykonujemy komendę za pomocą Invokera
+            { 
                 this.Invoker.ExecuteCommand(command);
-
                 return true;
-                // Jeśli chcemy, możemy tutaj wykonać inne operacje związane z ustawieniem statku
-                // np. wybór kolejnego statku do ustawienia
+                
             }
             else
             {
-                // Jeśli nie można postawić statku w tej pozycji, możemy wyświetlić komunikat
                 MessageBox.Show("Invalid position for ship placement. Please choose another location.");
                 return false;
             }
         }
-
 
 
         public abstract bool AddShipToFleet(Ship ship);
@@ -75,7 +68,7 @@ namespace ProjektZtp
     {
         public PlayerHuman(string username) : base(username)
         {
-            // Dodatkowa logika dla gracza człowieka, jeśli jest potrzebna.
+            
         }
 
         public override bool AddShipToFleet(Ship ship)
@@ -96,7 +89,7 @@ namespace ProjektZtp
 
         public PlayerAi() : base("AI")
         {
-            // Dodatkowa logika dla gracza AI, jeśli jest potrzebna.
+            
         }
         public override bool AddShipToFleet(Ship ship)
         {

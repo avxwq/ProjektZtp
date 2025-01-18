@@ -28,15 +28,12 @@ namespace ProjektZtp
 
         private void InitializeGridUI()
         {
-            // Oblicz szerokość i wysokość planszy
             int boardWidth = GameBoard.boardSize * CellSize;
             int boardHeight = GameBoard.boardSize * CellSize;
 
-            // Oblicz pozycję początkową, aby wyśrodkować planszę w kontrolce
             int startX = (this.Width - boardWidth) / 2;
-            int startY = (this.Height - boardHeight - 60) / 2;  // Zmniejszono margines na przyciski
+            int startY = (this.Height - boardHeight - 60) / 2; 
 
-            // Tworzenie przycisków siatki
             for (int x = 0; x < GameBoard.boardSize; x++)
             {
                 for (int y = 0; y < GameBoard.boardSize; y++)
@@ -53,7 +50,6 @@ namespace ProjektZtp
 
                     Controls.Add(button);
 
-                    // Połącz UI z logiką planszy
                     GameBoard.GetCell(new Position(x, y)).Button = button;
                 }
             }
@@ -64,19 +60,14 @@ namespace ProjektZtp
             Player player = game.GetPlayer1();
             shipsToPlace = player.PlayerFleet.GetComponents();
             currentShip = (Ship)shipsToPlace[currentShipIndex];
-            
         }
 
-
-
-        
         private void SetCurrentShip()
         {
             if (currentShipIndex < shipsToPlace.Count)
             {
                 currentShip = (Ship)shipsToPlace[currentShipIndex];
                 MessageBox.Show($"Place your {currentShip.Name} (size: {currentShip.Size})", "Ship Placement");
-                
             }
             else
             {
@@ -97,42 +88,34 @@ namespace ProjektZtp
 
             bool isShipPlaced = game.GetPlayer1().PlaceShip(currentShip, position, isHorizontal);
 
-            // Jeśli statek został ustawiony pomyślnie, przechodzimy do następnego
             if (isShipPlaced)
             {
                 currentShipIndex++;
                 SetCurrentShip();
             }
         }
-
-        // Dodanie przycisku Undo
         private void UndoButton_Click(object sender, EventArgs e)
         {
-            // Cofnij ostatnią operację
-            
             var isUndo = game.GetPlayer1().Invoker.Undo();
             if (isUndo)
             {
-                currentShipIndex--;  // Cofamy indeks
-                currentShip = (Ship)shipsToPlace[currentShipIndex];  // Ustawiamy aktualny statek
+                if (currentShipIndex > 0)
+                {
+                    currentShipIndex--;
+                    SetCurrentShip();
+                }
             }
-
-
         }
- 
 
-
-        // Dodanie przycisku Redo
         private void RedoButton_Click(object sender, EventArgs e)
         {
             var isRedo = game.GetPlayer1().Invoker.Redo();
-
             if (isRedo)
             {
-                if (currentShipIndex < shipsToPlace.Count-1)
+                if (currentShipIndex < shipsToPlace.Count - 1)
                 {
-                    currentShipIndex++;  // Cofamy indeks
-                    currentShip = (Ship)shipsToPlace[currentShipIndex];  // Ustawiamy aktualny statek
+                    currentShipIndex++;
+                    SetCurrentShip();
                 }
             }
         }
@@ -143,16 +126,15 @@ namespace ProjektZtp
 
             int boardWidth = GameBoard.boardSize * CellSize;
             int boardHeight = GameBoard.boardSize * CellSize;
-            int startX = (this.Width - boardWidth) / 2; // Start planszy w osi X
-            int startY = (this.Height - boardHeight) / 2; // Start planszy w osi Y
+            int startX = (this.Width - boardWidth) / 2;
+            int startY = (this.Height - boardHeight) / 2;
 
-            // Przycisk do zmiany orientacji statku (osobna linia nad Undo i Redo)
             var toggleOrientationButton = new Button
             {
                 Name = "toggleOrientationButton",
                 Text = "Toggle Orientation",
                 Size = new Size(120, 30),
-                Location = new Point(startX + boardWidth / 2 - 60, startY - 120) // Wyżej o 120 pikseli
+                Location = new Point(startX + boardWidth / 2 - 60, startY - 120)
             };
             toggleOrientationButton.Click += (s, args) =>
             {
@@ -161,42 +143,38 @@ namespace ProjektZtp
             };
             Controls.Add(toggleOrientationButton);
 
-            // Dodanie przycisku Undo (osobna linia)
             var undoButton = new Button
             {
                 Name = "undoButton",
                 Text = "Undo",
                 Size = new Size(80, 30),
-                Location = new Point(startX + boardWidth / 2 - 100, startY - 80) // Wyżej o 80 pikseli
+                Location = new Point(startX + boardWidth / 2 - 100, startY - 80)
             };
             undoButton.Click += UndoButton_Click;
             Controls.Add(undoButton);
 
-            // Dodanie przycisku Redo (osobna linia)
             var redoButton = new Button
             {
                 Name = "redoButton",
                 Text = "Redo",
                 Size = new Size(80, 30),
-                Location = new Point(startX + boardWidth / 2 + 20, startY - 80) // Wyżej o 80 pikseli
+                Location = new Point(startX + boardWidth / 2 + 20, startY - 80)
             };
             redoButton.Click += RedoButton_Click;
             Controls.Add(redoButton);
 
-            // Przycisk do przejścia do głównego ekranu gry (Start Game) pod planszą
             var startGameButton = new Button
             {
                 Name = "startGameButton",
                 Text = "Start Game",
                 Size = new Size(120, 30),
-                Location = new Point(startX + boardWidth / 2 - 60, startY + boardHeight + 20) // Pod planszą
+                Location = new Point(startX + boardWidth / 2 - 60, startY + boardHeight + 20)
             };
             startGameButton.Click += startGameButton_Click;
             Controls.Add(startGameButton);
         }
 
 
-        // Obsługa kliknięcia startGameButton
         private void startGameButton_Click(object sender, EventArgs e)
         {
             MainGameControl control = new MainGameControl(battleshipGameForm, game);
@@ -208,7 +186,6 @@ namespace ProjektZtp
             base.OnResize(e);
             CenterBoard();
 
-            // Ponownie ustawiamy pozycje przycisków
             UpdateButtonPositions();
         }
 
@@ -216,8 +193,7 @@ namespace ProjektZtp
         {
             int boardWidth = GameBoard.boardSize * CellSize;
             int startX = (this.Width - boardWidth) / 2;
-
-            // Ustalamy nowe pozycje przycisków w zależności od nowego rozmiaru
+  
             var toggleOrientationButton = Controls["toggleOrientationButton"] as Button;
             var undoButton = Controls["undoButton"] as Button;
             var redoButton = Controls["redoButton"] as Button;
