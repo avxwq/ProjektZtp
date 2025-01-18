@@ -11,7 +11,7 @@ namespace ProjektZtp
     {
         public int boardSize { get; private set; }
         private Cell[,] cells;
-        private Fleet fleet;
+        
 
         public Board(int boardSize)
         {
@@ -61,6 +61,13 @@ namespace ProjektZtp
             }
 
             return true;
+        }
+        public IEnumerable<Cell> GetAllCells()
+        {
+            foreach (var cell in cells)
+            {
+                yield return cell;
+            }
         }
 
         public ShotResult MakeShot(Position position)

@@ -119,12 +119,12 @@ namespace ProjektZtp
 
         public void SetPlayer1Fleet(Fleet fleet)
         {
-            player1.PlayerFleet = fleet;
+            player1.SetFleet(fleet);
         }
 
         public void SetPlayer2Fleet(Fleet fleet)
         {
-            player2.PlayerFleet = fleet;
+            player2.SetFleet(fleet);
         }
     }
 
