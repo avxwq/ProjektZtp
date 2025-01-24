@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,10 @@ namespace ProjektZtp
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (comboBox1.Text == "Easy") builder.SetAiStrategy(Difficulty.easy);
+            else if (comboBox1.Text == "Normal") builder.SetAiStrategy(Difficulty.medium);
+            else if (comboBox1.Text == "Hard") builder.SetAiStrategy(Difficulty.hard);
+
             if (comboBox2.Text == "Advanced")
             {
                 gameForm.ShowCurrentControl(new ChooseGamePropertiesControl(gameForm, builder));

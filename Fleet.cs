@@ -32,12 +32,30 @@ namespace ProjektZtp
     {
         public override string Name { get; }
         public override abstract int Size { get; }
+        public List<Cell> Cells { get; } = new List<Cell>();
 
         protected Ship(string name)
         {
             Name = name;
         }
+        public void AddCells(Position start, bool isHorizontal)
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                int x = isHorizontal ? start.X + i : start.X;  // Zmieniamy tylko X w przypadku orientacji poziomej
+                int y = isHorizontal ? start.Y : start.Y + i;  // Zmieniamy tylko Y w przypadku orientacji pionowej
+
+                // Przypisujemy nową komórkę do listy Cells
+                Cells.Add(new Cell(new Position(x, y)));  // Załóżmy, że Cell przyjmuje Position w konstruktorze
+            }
+        }
+
+        public bool IsSunk()
+        {
+            return Cells.All(cell => cell.IsHit);
+        }
     }
+
 
     public class BattleCruiser : Ship
     {
@@ -77,7 +95,7 @@ namespace ProjektZtp
 
     public class Fleet : FleetComponent
     {
-        private readonly List<FleetComponent> _components = new List<FleetComponent>();
+        public readonly List<FleetComponent> _components = new List<FleetComponent>();
 
         public override string Name { get; }
 

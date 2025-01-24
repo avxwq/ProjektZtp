@@ -65,8 +65,8 @@ namespace ProjektZtp
                 player2Fleet.Add(new AircraftCarrier("Battle Cruiser"));
             }
 
-            Player player1 = new PlayerHuman("Zbyszek");
-            Player player2 = new PlayerAi();
+            PlayerHuman player1 = new PlayerHuman("Zbyszek");
+            PlayerAi player2 = new PlayerAi();
 
             builder.SetPlayer1(player1);
             builder.SetPlayer2(player2);

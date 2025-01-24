@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace ProjektZtp
 {
@@ -38,7 +39,7 @@ namespace ProjektZtp
                 int x = isHorizontal ? start.X : start.X + i;
                 int y = isHorizontal ? start.Y + i : start.Y;
 
-                if (x >= boardSize || y >= boardSize || cells[x, y].IsOccupied)
+                if (x >= boardSize || y >= boardSize || cells[x, y].Ship != null)
                 {
                     return false;
                 }
@@ -57,7 +58,9 @@ namespace ProjektZtp
             {
                 int x = isHorizontal ? start.X : start.X + i;
                 int y = isHorizontal ? start.Y + i : start.Y;
-                cells[x, y].IsOccupied = true;
+                var cell = GetCell(new Position(x, y));
+                cell.Ship = ship;
+                cell.SetColor(Color.Green);
             }
 
             return true;
@@ -68,7 +71,7 @@ namespace ProjektZtp
             var cell = cells[position.X, position.Y];
             cell.IsHit = true;
 
-            if (cell.IsOccupied)
+            if (cell.Ship != null)
             {
                 return new ShotResult { IsHit = true, IsSunk = false }; // Simplified logic
             }
@@ -86,14 +89,17 @@ namespace ProjektZtp
     public class Cell
     {
         public Position Position { get; }
-        public bool IsOccupied { get; set; }
         public bool IsHit { get; set; }
         public Button Button { get; set; }
+        public Ship Ship { get; set; }
 
+        public void SetColor(Color color)
+        {
+            Button.BackColor = color;
+        }
         public Cell(Position position)
         {
             Position = position;
-            IsOccupied = false;
             IsHit = false;
         }
     }

@@ -10,16 +10,20 @@ namespace ProjektZtp
     public class Game
     {
         private Player player1;
-        private Player player2;
+        private PlayerAi player2;
         private Board board;
         public int BoardSize;
-        private GameMode mode;
-        public Game(Player player1, Player player2, int BoardSize, GameMode mode)
+        private Difficulty difficulty;
+        public Game(Player player1, PlayerAi player2, int BoardSize, Difficulty difficulty)
         {
             this.player1 = player1;
             this.player2 = player2;
-            this.mode = mode;
+            player2.SetAIStrategy(difficulty);
             this.BoardSize = BoardSize;
+        }
+        public void startGame()
+        {
+            //player2.placeShips();
         }
         public int GetBoardSize()
         {
@@ -43,12 +47,11 @@ namespace ProjektZtp
 
     public interface IGameBuilder
     {
-        void SetGameMode(GameMode gameMode);
-        void SetAiStrategy();
+        void SetAiStrategy(Difficulty difficulty);
         void SetBoardSize(int size);
         void SetBackgroundColor(Color color);
-        void SetPlayer1(Player player);
-        void SetPlayer2(Player player);
+        void SetPlayer1(PlayerHuman player);
+        void SetPlayer2(PlayerAi player);
         void SetPlayer1Fleet(Fleet fleet);
         void SetPlayer2Fleet(Fleet fleet);
         void BuildStandardFleet();
@@ -59,16 +62,16 @@ namespace ProjektZtp
 
     public class GameBuilder : IGameBuilder
     {
-        private GameMode gameMode;
         private Player player1;
-        private Player player2;
+        private PlayerAi player2;
         public int boardSize;
         private Game game;
         Color backgroundColor = Color.Gray;
+        private Difficulty difficulty;
 
         public void BuildGame()
         {
-            game = new Game(player1, player2, boardSize, gameMode);
+            game = new Game(player1, player2, boardSize, difficulty);
         }
 
         public Game GetGame()
@@ -76,9 +79,9 @@ namespace ProjektZtp
             return game;
         }
 
-        public void SetAiStrategy()
+        public void SetAiStrategy(Difficulty difficulty)
         {
-            throw new NotImplementedException();
+            this.difficulty = difficulty;
         }
 
         public void SetBackgroundColor(Color color)
@@ -95,20 +98,15 @@ namespace ProjektZtp
             player2.SetBoard(board2);
         }
 
-        public void SetGameMode(GameMode gameMode)
-        {
-            this.gameMode = gameMode;
-        }
-
-        public void SetPlayer1(Player player)
+        public void SetPlayer1(PlayerHuman player)
         {
             player1 = player;
         }
-        public void SetPlayer2(Player player)
+        public void SetPlayer2(PlayerAi player)
         {
             player2 = player;
         }
-        
+
         public void BuildStandardFleet()
         {
         }
@@ -119,12 +117,12 @@ namespace ProjektZtp
 
         public void SetPlayer1Fleet(Fleet fleet)
         {
-            player1.PlayerFleet = fleet;
+            player1.SetFleet(fleet);
         }
 
         public void SetPlayer2Fleet(Fleet fleet)
         {
-            player2.PlayerFleet = fleet;
+            player2.SetFleet(fleet);
         }
     }
 
@@ -138,8 +136,8 @@ namespace ProjektZtp
         }
         public void CreateStandardGame(string playerName)
         {
-            Player player = new PlayerHuman(playerName);
-            Player player2 = new PlayerAi();
+            PlayerHuman player = new PlayerHuman(playerName);
+            PlayerAi player2 = new PlayerAi();
             _builder.SetPlayer1(player);
             _builder.SetPlayer2(player2);
             _builder.SetBoardSize(10);
@@ -158,9 +156,10 @@ namespace ProjektZtp
             _builder.BuildGame();
         }
     }
-    public enum GameMode
+    public enum Difficulty
     {
-        vsAi,
-        vsHuman
+        easy,
+        medium,
+        hard
     }
 }

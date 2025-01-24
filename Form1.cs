@@ -19,7 +19,7 @@ namespace ProjektZtp
         {
             InitializeComponent();
 
-            currentControl = new ChooseOpponentControl(this, gameBuilder);
+            currentControl = new AiSetupControl(this, gameBuilder);
             this.Controls.Add(currentControl);
             CenterControl(currentControl); // Wycentrowanie kontrolki
         }

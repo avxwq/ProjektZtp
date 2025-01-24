@@ -100,9 +100,9 @@ namespace ProjektZtp
         {
             if (cell.IsHit)
             {
-                button.BackColor = cell.IsOccupied ? Color.Red : Color.White;
+                button.BackColor = cell.Ship != null ? Color.Red : Color.White;
             }
-            else if (cell.IsOccupied)
+            else if (cell.Ship == null)
             {
                 button.BackColor = Color.LightBlue;
             }
