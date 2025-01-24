@@ -28,25 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
 
             // 
             // PlaceShipsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button1);
             this.Name = "PlaceShipsControl";
-            this.Size = new System.Drawing.Size(1441, 800);
+            this.Size = new System.Drawing.Size(1441, 641);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-
+        private System.Windows.Forms.Button button1;
     }
 }

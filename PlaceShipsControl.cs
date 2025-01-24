@@ -78,7 +78,7 @@ namespace ProjektZtp
                 Name = "toggleOrientationButton",
                 Text = "Toggle Orientation",
                 Size = new Size(120, 30),
-                Location = new Point(startX + boardWidth / 2 - 60, startY - 150)
+                Location = new Point(startX + boardWidth / 2 - 60, startY - 130)
             };
             toggleOrientationButton.Click += (s, args) =>
             {
