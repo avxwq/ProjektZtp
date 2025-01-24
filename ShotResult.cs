@@ -12,7 +12,6 @@ namespace ProjektZtp
 
         public bool IsSunk { get; set; }
 
-        public string ShipName { get; set; }
     }
 
 }
