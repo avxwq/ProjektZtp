@@ -18,7 +18,6 @@ namespace ProjektZtp
         public BattleshipGameForm()
         {
             InitializeComponent();
-            gameBuilder.SetGameForm(this);
             currentControl = new AiSetupControl(this, gameBuilder);
             this.Controls.Add(currentControl);
             CenterControl(currentControl); // Wycentrowanie kontrolki

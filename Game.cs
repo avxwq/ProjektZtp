@@ -15,7 +15,6 @@ namespace ProjektZtp
         public int BoardSize;
         private bool isPlayer1Turn;
         private BattleshipGameForm gameForm;
-        public event Action GameOverEvent;
         public Game(Player player1, PlayerAi player2, int BoardSize, Difficulty difficulty, BattleshipGameForm gameForm)
         {
             this.player1 = player1;

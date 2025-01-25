@@ -20,6 +20,7 @@ namespace ProjektZtp
             InitializeComponent();
             gameForm = battleshipGameForm;
             this.builder = builder;
+            builder.SetGameForm(gameForm);
         }
 
         private void label1_Click(object sender, EventArgs e)
