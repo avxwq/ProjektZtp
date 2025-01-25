@@ -52,6 +52,7 @@
     <Compile Include="AiSetupControl.Designer.cs">
       <DependentUpon>AiSetupControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cell.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="ChooseGamePropertiesControl.cs">
       <SubType>UserControl</SubType>
@@ -73,6 +74,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameBuilder.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="MainGameControl.cs">
       <SubType>UserControl</SubType>
@@ -80,6 +82,7 @@
     <Compile Include="MainGameControl.Designer.cs">
       <DependentUpon>MainGameControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Observer.cs" />
     <Compile Include="PlaceShipsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,7 +93,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy.cs" />
-    <Compile Include="ShotResult.cs" />
     <EmbeddedResource Include="AiSetupControl.resx">
       <DependentUpon>AiSetupControl.cs</DependentUpon>
     </EmbeddedResource>

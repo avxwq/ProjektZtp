@@ -4,35 +4,83 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ProjektZtp
 {
-    public class Game
+    public class Game : IObserver
     {
         private Player player1;
         private PlayerAi player2;
-        private Board board;
         public int BoardSize;
-        private Difficulty difficulty;
+        private bool isPlayer1Turn;
+
+        public event Action GameOverEvent;
         public Game(Player player1, PlayerAi player2, int BoardSize, Difficulty difficulty)
         {
             this.player1 = player1;
             this.player2 = player2;
             player2.SetAIStrategy(difficulty);
             this.BoardSize = BoardSize;
+
+            player1.Attach(this);
+            player2.Attach(this);
+
+            isPlayer1Turn = true;
         }
         public void startGame()
         {
-            //player2.placeShips();
+            player2.placeShips();
         }
         public int GetBoardSize()
         {
             return BoardSize;
         }
 
+        public async void Update()
+        {
+            if (IsGameOver())
+            {
+                var winner = GetWinner();
+                MessageBox.Show($"Game over! Winner: {winner}");
+
+            }
+
+            if (isPlayer1Turn)
+            {
+                isPlayer1Turn = false;
+
+                LockPlayerBoard(true);
+
+                await Task.Delay(500);
+
+                player2.MakeShot(player1.getBoard());
+
+                LockPlayerBoard(false);
+            }
+            else
+            {
+                isPlayer1Turn = true;
+            }
+        }
+
+        private void LockPlayerBoard(bool lockBoard)
+        {
+            foreach (var cell in player2.getBoard().GetAllCells())
+            {
+                cell.Button.Enabled = !lockBoard;
+            }
+        }
+
         public bool IsGameOver()
         {
-            return false;
+            return player1.GetFleet().isSunk() || player2.GetFleet().isSunk();
+        }
+
+        public string GetWinner()
+        {
+            if (!IsGameOver()) return null;
+            return player1.GetFleet().isSunk() ? "AI" : player1.Username;
         }
 
         public Player GetPlayer1()
@@ -45,121 +93,6 @@ namespace ProjektZtp
         }
     }
 
-    public interface IGameBuilder
-    {
-        void SetAiStrategy(Difficulty difficulty);
-        void SetBoardSize(int size);
-        void SetBackgroundColor(Color color);
-        void SetPlayer1(PlayerHuman player);
-        void SetPlayer2(PlayerAi player);
-        void SetPlayer1Fleet(Fleet fleet);
-        void SetPlayer2Fleet(Fleet fleet);
-        void BuildStandardFleet();
-        void BuildAdvancedFleet(Fleet fleet);
-        void BuildGame();
-        Game GetGame();
-    }
 
-    public class GameBuilder : IGameBuilder
-    {
-        private Player player1;
-        private PlayerAi player2;
-        public int boardSize;
-        private Game game;
-        Color backgroundColor = Color.Gray;
-        private Difficulty difficulty;
 
-        public void BuildGame()
-        {
-            game = new Game(player1, player2, boardSize, difficulty);
-        }
-
-        public Game GetGame()
-        {
-            return game;
-        }
-
-        public void SetAiStrategy(Difficulty difficulty)
-        {
-            this.difficulty = difficulty;
-        }
-
-        public void SetBackgroundColor(Color color)
-        {
-            backgroundColor = color;
-        }
-
-        public void SetBoardSize(int size)
-        {
-            this.boardSize = size;
-            Board board1 = new Board(boardSize);
-            Board board2 = new Board(boardSize);
-            player1.SetBoard(board1);
-            player2.SetBoard(board2);
-        }
-
-        public void SetPlayer1(PlayerHuman player)
-        {
-            player1 = player;
-        }
-        public void SetPlayer2(PlayerAi player)
-        {
-            player2 = player;
-        }
-
-        public void BuildStandardFleet()
-        {
-        }
-        public void BuildAdvancedFleet(Fleet fleet)
-        {
-
-        }
-
-        public void SetPlayer1Fleet(Fleet fleet)
-        {
-            player1.SetFleet(fleet);
-        }
-
-        public void SetPlayer2Fleet(Fleet fleet)
-        {
-            player2.SetFleet(fleet);
-        }
-    }
-
-    public class GameDirector
-    {
-        private IGameBuilder _builder;
-
-        public GameDirector(IGameBuilder builder)
-        {
-            _builder = builder;
-        }
-        public void CreateStandardGame(string playerName)
-        {
-            PlayerHuman player = new PlayerHuman(playerName);
-            PlayerAi player2 = new PlayerAi();
-            _builder.SetPlayer1(player);
-            _builder.SetPlayer2(player2);
-            _builder.SetBoardSize(10);
-            Fleet fleet = new Fleet("Player 1 Fleet");
-            fleet.Add(new BattleCruiser("Battle cruiser"));
-            fleet.Add(new Warship("Warship"));
-            fleet.Add(new AircraftCarrier("Aircraft carrier"));
-            fleet.Add(new Frigate("Frigate"));
-            Fleet fleet2 = new Fleet("Player 2 Fleet");
-            fleet2.Add(new BattleCruiser("Battle cruiser"));
-            fleet2.Add(new Warship("Warship"));
-            fleet2.Add(new AircraftCarrier("Aircraft carrier"));
-            fleet2.Add(new Frigate("Frigate"));
-            _builder.SetPlayer1Fleet(fleet);
-            _builder.SetPlayer2Fleet(fleet2);
-            _builder.BuildGame();
-        }
-    }
-    public enum Difficulty
-    {
-        easy,
-        medium,
-        hard
-    }
 }

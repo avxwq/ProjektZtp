@@ -11,8 +11,6 @@ namespace ProjektZtp
         private readonly Game game;
         private readonly Board playerBoard;
         private readonly Board enemyBoard;
-        private readonly Button[,] playerBoardButtons;
-        private readonly Button[,] enemyBoardButtons;
         private readonly BattleshipGameForm battleshipGameForm;
 
         public MainGameControl(BattleshipGameForm battleshipGameForm, Game game)
@@ -21,9 +19,6 @@ namespace ProjektZtp
             this.game = game;
             playerBoard = game.GetPlayer1().getBoard();
             enemyBoard = game.GetPlayer2().getBoard();
-
-            playerBoardButtons = new Button[playerBoard.boardSize, playerBoard.boardSize];
-            enemyBoardButtons = new Button[enemyBoard.boardSize, enemyBoard.boardSize];
 
             InitializeComponents();
             InitializeBoards();
@@ -48,20 +43,12 @@ namespace ProjektZtp
             {
                 for (int y = 0; y < playerBoard.boardSize; y++)
                 {
-                    var button = new Button
-                    {
-                        Size = new Size(CellSize, CellSize),
-                        Location = new Point(y * CellSize + 10, x * CellSize + 20),
-                        BackColor = Color.LightBlue
-                    };
-
-                    playerBoardButtons[x, y] = button;
-                    playerBoardGroup.Controls.Add(button);
-
                     var cell = playerBoard.GetCell(new Position(x, y));
-                    cell.Button = button;
+                    cell.Button.Size = new Size(CellSize, CellSize);
+                    cell.Button.Location = new Point(y * CellSize + 10, x * CellSize + 20);
+                    cell.Button.Tag = new Position(x, y);
+                    playerBoardGroup.Controls.Add(cell.Button);
 
-                    UpdateButtonAppearance(button, cell);
                 }
             }
 
@@ -79,90 +66,35 @@ namespace ProjektZtp
             {
                 for (int y = 0; y < enemyBoard.boardSize; y++)
                 {
-                    var button = new Button
-                    {
-                        Size = new Size(CellSize, CellSize),
-                        Location = new Point(y * CellSize + 10, x * CellSize + 20),
-                        BackColor = Color.Gray,
-                        Tag = new Position(x, y)
-                    };
+                    var cell = enemyBoard.GetCell(new Position(x, y));
+                    cell.Button.Size = new Size(CellSize, CellSize);
+                    cell.Button.Location = new Point(y * CellSize + 10, x * CellSize + 20);
+                    cell.Button.BackColor = Color.LightBlue;
+                    cell.Button.Tag = new Position(x, y);
 
-                    button.Click += EnemyBoardButton_Click;
-                    enemyBoardButtons[x, y] = button;
-                    enemyBoardGroup.Controls.Add(button);
+                    
+
+                    cell.Button.Click += EnemyBoardButton_Click;
+                    enemyBoardGroup.Controls.Add(cell.Button);
                 }
             }
 
             Controls.Add(enemyBoardGroup);
         }
 
-        private void UpdateButtonAppearance(Button button, Cell cell)
-        {
-            if (cell.IsHit)
-            {
-                button.BackColor = cell.Ship != null ? Color.Red : Color.White;
-            }
-            else if (cell.Ship == null)
-            {
-                button.BackColor = Color.LightBlue;
-            }
-        }
+
 
         private void EnemyBoardButton_Click(object sender, EventArgs e)
         {
-            if (game.IsGameOver())
-            {
-                MessageBox.Show("The game is over!", "Game Over");
-                return;
-            }
-
             var button = sender as Button;
             if (button == null) return;
 
             var position = (Position)button.Tag;
 
-            if (enemyBoard.GetCell(position).IsHit)
-            {
-                MessageBox.Show("You already shot here!", "Invalid Move");
-                return;
-            }
+            game.GetPlayer1().FireShot(position, enemyBoard, true);
 
-            ShotResult shot = enemyBoard.MakeShot(position);
-
-            button.BackColor = shot.IsHit ? Color.Red : Color.White;
-
-            if (game.IsGameOver())
-            {
-                MessageBox.Show("You won!", "Game Over");
-            }
-            else
-            {
-                EnemyTurn();
-            }
         }
 
-        private void EnemyTurn()
-        {
-            var random = new Random();
 
-            Position position;
-            do
-            {
-                position = new Position(random.Next(0, playerBoard.boardSize), random.Next(0, playerBoard.boardSize));
-            } while (playerBoard.GetCell(position).IsHit);
-
-            ShotResult shot = playerBoard.MakeShot(position);
-
-            var button = playerBoard.GetCell(position).Button;
-            if (button != null)
-            {
-                button.BackColor = shot.IsHit ? Color.Red : Color.White;
-            }
-
-            if (game.IsGameOver())
-            {
-                MessageBox.Show("You lost!", "Game Over");
-            }
-        }
     }
 }

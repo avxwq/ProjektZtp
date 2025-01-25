@@ -16,9 +16,9 @@ namespace ProjektZtp
 
     public class Invoker
     {
-        private readonly Stack<ICommand> placeCommandStack;  // Stos dla komend umieszczania statków
-        private readonly Stack<ICommand> shotCommandStack;   // Stos dla komend strzałów
-        private readonly Stack<ICommand> redoPlaceStack;     // Stos redo dla komend umieszczania statków
+        private readonly Stack<ICommand> placeCommandStack;  
+        private readonly Stack<ICommand> shotCommandStack;   
+        private readonly Stack<ICommand> redoPlaceStack;     
 
         public Invoker()
         {
@@ -27,29 +27,26 @@ namespace ProjektZtp
             redoPlaceStack = new Stack<ICommand>();
         }
 
-        // Wykonanie komendy (umieszczania statku lub strzału)
-        public void ExecuteCommand(ICommand command)
+        public bool ExecuteCommand(ICommand command)
         {
             if (command.Execute())
             {
-
-
                 if (command is PlaceShipCommand)
                 {
                     placeCommandStack.Push(command);
-                    redoPlaceStack.Clear();// Dodanie do stosu dla komend umieszczania statków
+                    redoPlaceStack.Clear();
                 }
-                //else if (command is MakeShotCommand)
-                //{
-                //    shotCommandStack.Push(command);   // Dodanie do stosu dla komend strzałów
-                //}
-
+                else if (command is FireShotCommand)
+                {
+                   shotCommandStack.Push(command);   
+                }
 
                 redoPlaceStack.Clear();
+                return true;
             }
+            return false;
         }
 
-        // Cofnięcie ostatniej komendy (umieszczania statku lub strzału)
         public bool Undo()
         {
             if (placeCommandStack.Count > 0)
@@ -57,7 +54,7 @@ namespace ProjektZtp
                 var command = placeCommandStack.Pop();
                 command.Undo();
                 redoPlaceStack.Push(command);
-                return true;//Dodanie do stosu redo dla umieszczania statków
+                return true;
             }
             else
             {
@@ -66,7 +63,6 @@ namespace ProjektZtp
             }
         }
 
-        // Ponowne wykonanie ostatniej cofniętej komendy
         public bool Redo()
         {
             if (redoPlaceStack.Count > 0)
@@ -74,7 +70,7 @@ namespace ProjektZtp
                 var command = redoPlaceStack.Pop();
                 command.Execute();
                 placeCommandStack.Push(command);
-                return true;// Dodanie do stosu umieszczania statków
+                return true;
             }
             else
             {
@@ -91,7 +87,6 @@ namespace ProjektZtp
         private readonly Ship ship;
         private readonly Position start;
         private readonly bool isHorizontal;
-
         private readonly Stack<Ship> ShipsToPlace;
         private readonly bool isHuman;
 
@@ -103,7 +98,6 @@ namespace ProjektZtp
             this.start = start;
             this.isHorizontal = isHorizontal;
             this.ShipsToPlace = ShipsToPlace;
-
             this.isHuman = isHuman;
         }
 
@@ -114,7 +108,7 @@ namespace ProjektZtp
                 if (isHuman) MessageBox.Show("Invalid position for ship placement. Please choose another location.");
                 return false;
             }
-            ship.AddCells(start, isHorizontal);
+            ship.AddCells(board, start, isHorizontal);
             ShipsToPlace.Pop();
 
 
@@ -123,7 +117,6 @@ namespace ProjektZtp
 
         public void Undo()
         {
-            // Usunięcie statku z planszy
             for (int i = 0; i < ship.Size; i++)
             {
                 int x = isHorizontal ? start.X : start.X + i;
@@ -132,40 +125,36 @@ namespace ProjektZtp
                 var cell = board.GetCell(new Position(x, y));
                 if (cell != null)
                 {
-                    cell.Ship = null; // Usuwamy odniesienie do statku z komórki
-                    var button = cell.Button;
-                    if (button != null)
-                    {
-                        button.BackColor = Color.LightBlue; // Przywracamy kolor komórki
-                    }
+                    cell.Ship = null; 
                 }
+                cell.UpdateState();
             }
-
-            // Wyczyszczenie listy komórek statku
             ship.Cells.Clear();
 
-            // Dodanie statku z powrotem na stos
             ShipsToPlace.Push(ship);
         }
     }
 
-    public class MakeShotCommand : ICommand
+    public class FireShotCommand : ICommand
     {
         private readonly Board board;
         private readonly Position position;
-        private readonly bool isHorizontal;
-        bool isHuman;
-
-
-        public MakeShotCommand(Board board, Position position, bool isHuman)
+        private readonly bool isHuman;
+        public FireShotCommand(Board board, Position position, bool isHuman)
         {
             this.board = board;
             this.position = position;
+            this.isHuman = isHuman;
         }
 
         public bool Execute()
         {
-            throw new NotImplementedException();
+            if (!board.FireShot(position))
+            {
+                if (isHuman) MessageBox.Show("You already shot here!", "Invalid Move");
+                return false;
+            }
+            return true;
         }
 
         public void Undo()

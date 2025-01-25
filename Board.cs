@@ -12,7 +12,6 @@ namespace ProjektZtp
     {
         public int boardSize { get; private set; }
         private Cell[,] cells;
-        
 
         public Board(int boardSize)
         {
@@ -60,7 +59,7 @@ namespace ProjektZtp
                 int y = isHorizontal ? start.Y + i : start.Y;
                 var cell = GetCell(new Position(x, y));
                 cell.Ship = ship;
-                cell.SetColor(Color.Green);
+                cell.UpdateState();
             }
 
             return true;
@@ -73,17 +72,12 @@ namespace ProjektZtp
             }
         }
 
-        public ShotResult MakeShot(Position position)
+        public bool FireShot(Position position)
         {
-            var cell = cells[position.X, position.Y];
-            cell.IsHit = true;
-
-            if (cell.Ship != null)
-            {
-                return new ShotResult { IsHit = true, IsSunk = false }; // Simplified logic
-            }
-
-            return new ShotResult { IsHit = false, IsSunk = false };
+            Cell cell = GetCell(position);
+            if(cell.IsHit) return false;
+            cell.MarkAsHit();
+            return true;
         }
 
         public Cell GetCell(Position position)
@@ -92,38 +86,5 @@ namespace ProjektZtp
         }
 
     }
-
-    public class Cell
-    {
-        public Position Position { get; }
-        public bool IsHit { get; set; }
-        public Button Button { get; set; }
-        public Ship Ship { get; set; }
-
-        public void SetColor(Color color)
-        {
-            Button.BackColor = color;
-        }
-        public Cell(Position position)
-        {
-            Position = position;
-            IsHit = false;
-        }
-    }
-
-    public struct Position
-    {
-        public int X { get; }
-        public int Y { get; }
-
-        public Position(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-    }
-
-
-
 
 }

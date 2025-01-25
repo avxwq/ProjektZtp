@@ -38,19 +38,20 @@ namespace ProjektZtp
         {
             Name = name;
         }
-        public void AddCells(Position start, bool isHorizontal)
+        public void AddCells(Board board, Position start, bool isHorizontal)
         {
             for (int i = 0; i < Size; i++)
             {
-                int x = isHorizontal ? start.X + i : start.X;  // Zmieniamy tylko X w przypadku orientacji poziomej
-                int y = isHorizontal ? start.Y : start.Y + i;  // Zmieniamy tylko Y w przypadku orientacji pionowej
+                int x = isHorizontal ? start.X : start.X + i;
+                int y = isHorizontal ? start.Y + i : start.Y;
 
-                // Przypisujemy nową komórkę do listy Cells
-                Cells.Add(new Cell(new Position(x, y)));  // Załóżmy, że Cell przyjmuje Position w konstruktorze
+                var cell = board.GetCell(new Position(x, y));
+
+                Cells.Add(cell);
             }
         }
 
-        public bool IsSunk()
+        public bool isSunk()
         {
             return Cells.All(cell => cell.IsHit);
         }
@@ -98,6 +99,15 @@ namespace ProjektZtp
         public readonly List<FleetComponent> _components = new List<FleetComponent>();
 
         public override string Name { get; }
+
+        public bool isSunk()
+        {
+            foreach(Ship ship in _components)
+            {
+                if(!ship.isSunk()) return false;
+            }
+            return true;
+        }
 
         public Fleet(string name)
         {

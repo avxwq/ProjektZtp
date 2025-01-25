@@ -35,19 +35,16 @@ namespace ProjektZtp
             {
                 for (int y = 0; y < GameBoard.boardSize; y++)
                 {
-                    var button = new Button
-                    {
-                        Size = new Size(CellSize, CellSize),
-                        Location = new Point(startX + y * CellSize, startY + x * CellSize),
-                        BackColor = Color.LightBlue,
-                        Tag = new Position(x, y)
-                    };
+                    var cell = GameBoard.GetCell(new Position(x, y));
+                    cell.Button.Size = new Size(CellSize, CellSize);
+                    cell.Button.Location = new Point(startX + y * CellSize, startY + x * CellSize);
+                    cell.Button.Tag = new Position(x, y);
+                    
 
-                    button.Click += GridButton_Click;
+                    cell.Button.Click += GridButton_Click;
 
-                    Controls.Add(button);
+                    Controls.Add(cell.Button);
 
-                    GameBoard.GetCell(new Position(x, y)).Button = button;
                 }
             }
 
@@ -167,58 +164,13 @@ namespace ProjektZtp
                 MessageBox.Show("Place all the ships before starting the game");
                 return;
             }
+            game.startGame();
             MainGameControl control = new MainGameControl(battleshipGameForm, game);
             battleshipGameForm.ShowCurrentControl(control);
-            game.startGame();
+            
         }
 
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            CenterBoard();
 
-            UpdateButtonPositions();
-        }
-
-        private void UpdateButtonPositions()
-        {
-            int boardWidth = GameBoard.boardSize * CellSize;
-            int startX = (this.Width - boardWidth) / 2;
-
-            var toggleOrientationButton = Controls["toggleOrientationButton"] as Button;
-            var undoButton = Controls["undoButton"] as Button;
-            var redoButton = Controls["redoButton"] as Button;
-            var startGameButton = Controls["startGameButton"] as Button;
-
-            if (toggleOrientationButton != null)
-                toggleOrientationButton.Location = new Point(startX + boardWidth / 2 - 60, 10);
-
-            if (undoButton != null)
-                undoButton.Location = new Point(startX + boardWidth / 2 - 60, 50);
-
-            if (redoButton != null)
-                redoButton.Location = new Point(startX + boardWidth / 2 + 60, 50);
-
-            if (startGameButton != null)
-                startGameButton.Location = new Point(startX + boardWidth / 2 - 60, 90);
-        }
-
-        private void CenterBoard()
-        {
-            int boardWidth = GameBoard.boardSize * CellSize;
-            int boardHeight = GameBoard.boardSize * CellSize;
-
-            int startX = (this.Width - boardWidth) / 2;
-            int startY = (this.Height - boardHeight) / 2;
-
-            foreach (Control control in Controls)
-            {
-                if (control is Button button && button.Tag is Position position)
-                {
-                    button.Location = new Point(startX + position.Y * CellSize, startY + position.X * CellSize);
-                }
-            }
-        }
 
     }
 

@@ -7,13 +7,17 @@ using System.Windows.Forms;
 
 namespace ProjektZtp
 {
-    public abstract class Player
+    public abstract class Player : ISubject
     {
         public string Username;
         public Fleet PlayerFleet { get; private set; }
         public Board PlayerBoard { get; private set; }
         public Invoker Invoker { get; private set; }
         public Stack<Ship> ShipsToPlace { get; private set; }
+        
+
+
+        private List<IObserver> observers = new List<IObserver>();
 
         public Player(string username)
         {
@@ -23,9 +27,10 @@ namespace ProjektZtp
         }
 
 
-        public void MakeShot(Position position)
+        public void FireShot(Position position, Board board, bool isHuman)
         {
-
+            var command = new FireShotCommand(board, position, isHuman);
+            if(this.Invoker.ExecuteCommand(command)) Notify();
         }
 
         public void PlaceShip(Position position, bool isHorizontal, bool isHuman)
@@ -38,6 +43,24 @@ namespace ProjektZtp
         }
         public abstract bool AddShipToFleet(Ship ship);
 
+        public void Attach(IObserver observer)
+        {
+            observers.Add(observer);
+        }
+
+        public void Detach(IObserver observer)
+        {
+            observers.Remove(observer);
+        }
+
+        public void Notify()
+        {
+            foreach (var observer in observers)
+            {
+                observer.Update();
+            }
+        }
+
         public void SetFleet(Fleet fleet)
         {
             PlayerFleet = fleet;
@@ -45,6 +68,11 @@ namespace ProjektZtp
             {
                 ShipsToPlace.Push(PlayerFleet._components[i] as Ship);
             }
+        }
+
+        public Fleet GetFleet()
+        {
+            return PlayerFleet;
         }
 
         public void SetBoard(Board board)
@@ -76,9 +104,6 @@ namespace ProjektZtp
         {
             throw new NotImplementedException();
         }
-
-
-
     }
 
     public class PlayerAi : Player
@@ -94,8 +119,19 @@ namespace ProjektZtp
         {
             while (ShipsToPlace.Count > 0)
             {
+                var placement = aiStrategy.GetShipPlacement(getBoard(), ShipsToPlace.Peek());
+                var position = placement.Item1;
+                var isHorizontal = placement.Item2;
 
+                var command = new PlaceShipCommand(PlayerBoard, ShipsToPlace.Peek(), position, isHorizontal, ShipsToPlace, false);
+                this.Invoker.ExecuteCommand(command);
             }
+        }
+
+        public void MakeShot(Board board)
+        {
+            Position position = aiStrategy.GetShotPosition(board);
+            FireShot(position, board, false);
         }
 
         public void SetAIStrategy(Difficulty difficulty)
