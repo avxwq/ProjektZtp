@@ -18,7 +18,7 @@ namespace ProjektZtp
         public BattleshipGameForm()
         {
             InitializeComponent();
-
+            gameBuilder.SetGameForm(this);
             currentControl = new AiSetupControl(this, gameBuilder);
             this.Controls.Add(currentControl);
             CenterControl(currentControl); // Wycentrowanie kontrolki
@@ -39,19 +39,6 @@ namespace ProjektZtp
             control.Top = (this.ClientSize.Height - control.Height) / 2;
         }
 
-        public void ResetGame()
-        {
-            // Resetowanie komponentów związanych z grą
-            gameBuilder = new GameBuilder();  // Ponowne zainicjowanie obiektu GameBuilder
-
-            // Tworzenie nowego obiektu formularza i ustawienie kontrolki
-            var newAiSetupControl = new AiSetupControl(this, gameBuilder);
-            ShowCurrentControl(newAiSetupControl);  // Pokazuje nowy ekran ustawiania gry
-
-            // Opcjonalnie: wyczyszczenie wyników, jeśli są wyświetlane na formularzu
-            // W takim przypadku można tutaj dodać kod czyszczący wyniki (np. labelki)
-            // scoreLabel.Text = string.Empty;
-        }
 
         protected override void OnResize(EventArgs e)
         {

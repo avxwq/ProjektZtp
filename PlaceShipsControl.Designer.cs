@@ -37,10 +37,10 @@
             // 
             // PlaceShipsControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(4F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "PlaceShipsControl";
-            this.Size = new System.Drawing.Size(1441, 800);
+            this.Size = new System.Drawing.Size(2200, 1600);
             this.ResumeLayout(false);
 
         }

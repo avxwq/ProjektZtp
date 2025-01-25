@@ -60,7 +60,7 @@ namespace ProjektZtp
 
     public class BattleCruiser : Ship
     {
-        public override int Size => 5;
+        public override int Size => 2;
 
         public BattleCruiser(string name) : base(name)
         {
@@ -87,7 +87,7 @@ namespace ProjektZtp
 
     public class AircraftCarrier : Ship
     {
-        public override int Size => 8;
+        public override int Size => 6;
 
         public AircraftCarrier(string name) : base(name)
         {
@@ -129,6 +129,64 @@ namespace ProjektZtp
         public override List<FleetComponent> GetComponents()
         {
             return _components;
+        }
+    }
+
+    public class FleetTemplate
+    {
+        private readonly List<Ship> _ships;
+
+        public FleetTemplate()
+        {
+            _ships = new List<Ship>();
+        }
+
+        public FleetTemplate AddBattleCruiser(int count = 2)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _ships.Add(new BattleCruiser($"Battle Cruiser {count - i}"));
+            }
+            return this;
+        }
+
+        public FleetTemplate AddFrigate(int count = 2)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _ships.Add(new Frigate($"Frigate {count - i}"));
+            }
+            return this;
+        }
+
+        public FleetTemplate AddWarship(int count = 2)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _ships.Add(new Warship($"Warship {count - i}"));
+            }
+            return this;
+        }
+
+        public FleetTemplate AddAircraftCarrier(int count = 1)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _ships.Add(new AircraftCarrier($"Aircraft Carrier {count - i}"));
+            }
+            return this;
+        }
+
+
+
+        public Fleet Build(string fleetName)
+        {
+            Fleet fleet = new Fleet(fleetName);
+            foreach (var ship in _ships)
+            {
+                fleet.Add(ship);
+            }
+            return fleet;
         }
     }
 }

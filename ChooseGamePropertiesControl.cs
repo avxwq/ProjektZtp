@@ -39,6 +39,12 @@ namespace ProjektZtp
             int numWarships = int.Parse(comboBox4.Text);
             int numAircraftCarriers = int.Parse(comboBox5.Text);
 
+            PlayerHuman player1 = new PlayerHuman("Gracz");
+            PlayerAi player2 = new PlayerAi();
+
+            builder.SetPlayer1(player1);
+            builder.SetPlayer2(player2);
+
             builder.SetBoardSize(BoardSize);
 
             Fleet player1Fleet = new Fleet("Player 1 Fleet");
@@ -46,30 +52,25 @@ namespace ProjektZtp
 
             for (int i = 0; i < numBattleCruisers; i++)
             {
-                player1Fleet.Add(new BattleCruiser("Battle Cruiser"));
-                player2Fleet.Add(new BattleCruiser("Battle Cruiser"));
+                player1Fleet.Add(new BattleCruiser($"Battle Cruiser {numBattleCruisers - i}"));
+                player2Fleet.Add(new BattleCruiser($"Battle Cruiser {numBattleCruisers - i}"));
             }
             for (int i = 0; i < numFrigates; i++)
             {
-                player1Fleet.Add(new Frigate("Frigate"));
-                player2Fleet.Add(new Frigate("Battle Cruiser"));
+                player1Fleet.Add(new Frigate($"Frigate {numFrigates- i}"));
+                player2Fleet.Add(new Frigate($"Frigate {numFrigates - i}"));
             }
             for (int i = 0; i < numWarships; i++)
             {
-                player1Fleet.Add(new Warship("Warship"));
-                player2Fleet.Add(new Warship("Battle Cruiser"));
+                player1Fleet.Add(new Warship($"Warship {numWarships - i}"));
+                player2Fleet.Add(new Warship($"Warship {numWarships - i}"));
             }
             for (int i = 0; i < numAircraftCarriers; i++)
             {
-                player1Fleet.Add(new AircraftCarrier("Aircraft Carrier"));
-                player2Fleet.Add(new AircraftCarrier("Battle Cruiser"));
+                player1Fleet.Add(new AircraftCarrier($"Aircraft Carrier {numAircraftCarriers - i}"));
+                player2Fleet.Add(new AircraftCarrier($"Aircraft Carrier {numAircraftCarriers - i}"));
             }
 
-            PlayerHuman player1 = new PlayerHuman("Zbyszek");
-            PlayerAi player2 = new PlayerAi();
-
-            builder.SetPlayer1(player1);
-            builder.SetPlayer2(player2);
 
             builder.SetPlayer1Fleet(player1Fleet);
             builder.SetPlayer2Fleet(player2Fleet);

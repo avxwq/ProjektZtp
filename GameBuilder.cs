@@ -31,15 +31,21 @@ namespace ProjektZtp
         private Game game;
         Color backgroundColor = Color.Gray;
         private Difficulty difficulty;
+        private BattleshipGameForm gameForm;
 
         public void BuildGame()
         {
-            game = new Game(player1, player2, boardSize, difficulty);
+            game = new Game(player1, player2, boardSize, difficulty, gameForm);
         }
 
         public Game GetGame()
         {
             return game;
+        }
+
+        public void SetGameForm(BattleshipGameForm gameForm)
+        {
+            this.gameForm = gameForm;
         }
 
         public void SetAiStrategy(Difficulty difficulty)
@@ -72,6 +78,7 @@ namespace ProjektZtp
 
         public void BuildStandardFleet()
         {
+
         }
         public void BuildAdvancedFleet(Fleet fleet)
         {
@@ -104,17 +111,20 @@ namespace ProjektZtp
             _builder.SetPlayer1(player);
             _builder.SetPlayer2(player2);
             _builder.SetBoardSize(10);
-            Fleet fleet = new Fleet("Player 1 Fleet");
-            fleet.Add(new BattleCruiser("Battle cruiser"));
-            fleet.Add(new Warship("Warship"));
-            fleet.Add(new AircraftCarrier("Aircraft carrier"));
-            fleet.Add(new Frigate("Frigate"));
-            Fleet fleet2 = new Fleet("Player 2 Fleet");
-            fleet2.Add(new BattleCruiser("Battle cruiser"));
-            fleet2.Add(new Warship("Warship"));
-            fleet2.Add(new AircraftCarrier("Aircraft carrier"));
-            fleet2.Add(new Frigate("Frigate"));
-            _builder.SetPlayer1Fleet(fleet);
+            Fleet fleet1 = new FleetTemplate()
+                .AddBattleCruiser()
+                .AddWarship()
+                .AddAircraftCarrier()
+                .AddFrigate()
+                .Build("Player 1 Fleet");
+
+            Fleet fleet2 = new FleetTemplate()
+                .AddBattleCruiser()
+                .AddWarship()
+                .AddAircraftCarrier()
+                .AddFrigate()
+                .Build("Player 2 Fleet");
+            _builder.SetPlayer1Fleet(fleet1);
             _builder.SetPlayer2Fleet(fleet2);
             _builder.BuildGame();
         }

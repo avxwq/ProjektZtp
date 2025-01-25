@@ -14,14 +14,15 @@ namespace ProjektZtp
         private PlayerAi player2;
         public int BoardSize;
         private bool isPlayer1Turn;
-
+        private BattleshipGameForm gameForm;
         public event Action GameOverEvent;
-        public Game(Player player1, PlayerAi player2, int BoardSize, Difficulty difficulty)
+        public Game(Player player1, PlayerAi player2, int BoardSize, Difficulty difficulty, BattleshipGameForm gameForm)
         {
             this.player1 = player1;
             this.player2 = player2;
             player2.SetAIStrategy(difficulty);
             this.BoardSize = BoardSize;
+            this.gameForm = gameForm;
 
             player1.Attach(this);
             player2.Attach(this);
@@ -44,6 +45,9 @@ namespace ProjektZtp
                 var winner = GetWinner();
                 MessageBox.Show($"Game over! Winner: {winner}");
 
+                var aiSetupControl = new AiSetupControl(gameForm, new GameBuilder());
+                gameForm.ShowCurrentControl(aiSetupControl);
+                return;
             }
 
             if (isPlayer1Turn)
