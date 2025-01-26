@@ -28,19 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-
             // 
             // PlaceShipsControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(4F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Transparent;
+            this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Name = "PlaceShipsControl";
-            this.Size = new System.Drawing.Size(2200, 1600);
+            this.Size = new System.Drawing.Size(3300, 1300);
             this.ResumeLayout(false);
 
         }

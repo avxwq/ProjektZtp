@@ -116,10 +116,7 @@
             this.comboBox2.Items.AddRange(new object[] {
             "1",
             "2",
-            "3",
-            "4",
-            "5",
-            "6"});
+            "3"});
             this.comboBox2.Location = new System.Drawing.Point(284, 136);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 24);
@@ -131,10 +128,7 @@
             this.comboBox3.Items.AddRange(new object[] {
             "1",
             "2",
-            "3",
-            "4",
-            "5",
-            "6"});
+            "3"});
             this.comboBox3.Location = new System.Drawing.Point(284, 196);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 24);
@@ -146,10 +140,7 @@
             this.comboBox4.Items.AddRange(new object[] {
             "1",
             "2",
-            "3",
-            "4",
-            "5",
-            "6"});
+            "3"});
             this.comboBox4.Location = new System.Drawing.Point(284, 256);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(121, 24);
@@ -161,10 +152,7 @@
             this.comboBox5.Items.AddRange(new object[] {
             "1",
             "2",
-            "3",
-            "4",
-            "5",
-            "6"});
+            "3"});
             this.comboBox5.Location = new System.Drawing.Point(284, 316);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(121, 24);

@@ -8,7 +8,6 @@ using System.Drawing;
 
 namespace ProjektZtp
 {
-    
     public class Cell
     {
         public Position Position { get; }
@@ -16,11 +15,11 @@ namespace ProjektZtp
         public Button Button { get; set; }
         public Ship Ship { get; set; }
 
-
         private ICellState state;
 
         public void UpdateState()
         {
+            // Determines the state of the cell based on whether it's hit and whether it contains a ship.
             if (IsHit)
             {
                 if (Ship != null)
@@ -51,6 +50,7 @@ namespace ProjektZtp
             UpdateState();
         }
 
+        // Initializes a cell with a default state and associates it with a UI button for rendering.
         public Cell(Position position)
         {
             Position = position;
@@ -99,10 +99,11 @@ namespace ProjektZtp
         {
             if (cell.Ship != null)
             {
+                // Updates all cells of the sunk ship to clearly represent its destroyed state.
                 foreach (var c in cell.Ship.Cells)
                 {
-                    c.Button.BackColor = Color.Red; 
-                    c.Button.Text = "X";           
+                    c.Button.BackColor = Color.Red;
+                    c.Button.Text = "X";
                     c.Button.Font = new Font(c.Button.Font.FontFamily, 14, FontStyle.Bold);
                 }
             }
@@ -114,6 +115,7 @@ namespace ProjektZtp
         public int X { get; }
         public int Y { get; }
 
+        // Represents the coordinates of a cell on the board.
         public Position(int x, int y)
         {
             X = x;

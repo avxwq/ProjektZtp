@@ -17,8 +17,6 @@ namespace ProjektZtp
         void SetPlayer2(PlayerAi player);
         void SetPlayer1Fleet(Fleet fleet);
         void SetPlayer2Fleet(Fleet fleet);
-        void BuildStandardFleet();
-        void BuildAdvancedFleet(Fleet fleet);
         void BuildGame();
         Game GetGame();
     }
@@ -76,14 +74,6 @@ namespace ProjektZtp
             player2 = player;
         }
 
-        public void BuildStandardFleet()
-        {
-
-        }
-        public void BuildAdvancedFleet(Fleet fleet)
-        {
-
-        }
 
         public void SetPlayer1Fleet(Fleet fleet)
         {

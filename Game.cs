@@ -15,6 +15,7 @@ namespace ProjektZtp
         public int BoardSize;
         private bool isPlayer1Turn;
         private BattleshipGameForm gameForm;
+
         public Game(Player player1, PlayerAi player2, int BoardSize, Difficulty difficulty, BattleshipGameForm gameForm)
         {
             this.player1 = player1;
@@ -23,15 +24,17 @@ namespace ProjektZtp
             this.BoardSize = BoardSize;
             this.gameForm = gameForm;
 
-            player1.Attach(this);
+            player1.Attach(this); // Attach the game as an observer to receive updates.
             player2.Attach(this);
 
-            isPlayer1Turn = true;
+            isPlayer1Turn = true; 
         }
+
         public void startGame()
         {
-            player2.placeShips();
+            player2.placeShips(); // Automatically place AI ships at the start of the game.
         }
+
         public int GetBoardSize()
         {
             return BoardSize;
@@ -44,6 +47,7 @@ namespace ProjektZtp
                 var winner = GetWinner();
                 MessageBox.Show($"Game over! Winner: {winner}");
 
+                // Reset the UI to allow the user to start a new game.
                 var aiSetupControl = new AiSetupControl(gameForm, new GameBuilder());
                 gameForm.ShowCurrentControl(aiSetupControl);
                 return;
@@ -53,17 +57,17 @@ namespace ProjektZtp
             {
                 isPlayer1Turn = false;
 
-                LockPlayerBoard(true);
+                LockPlayerBoard(true); // Prevent the player from interacting during the AI's turn.
 
-                await Task.Delay(500);
+                await Task.Delay(500); // Simulate a delay for the AI's action to improve the user experience.
 
                 player2.MakeShot(player1.getBoard());
 
-                LockPlayerBoard(false);
+                LockPlayerBoard(false); // Allow the player to interact again.
             }
             else
             {
-                isPlayer1Turn = true;
+                isPlayer1Turn = true; // Switch to Player 1's turn.
             }
         }
 
@@ -77,12 +81,13 @@ namespace ProjektZtp
 
         public bool IsGameOver()
         {
+            // The game is over when either player's fleet is fully sunk.
             return player1.GetFleet().isSunk() || player2.GetFleet().isSunk();
         }
 
         public string GetWinner()
         {
-            if (!IsGameOver()) return null;
+            if (!IsGameOver()) return null; // No winner if the game isn't over.
             return player1.GetFleet().isSunk() ? "AI" : player1.Username;
         }
 
@@ -90,12 +95,10 @@ namespace ProjektZtp
         {
             return player1;
         }
+
         public Player GetPlayer2()
         {
             return player2;
         }
     }
-
-
-
 }

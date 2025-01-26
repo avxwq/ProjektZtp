@@ -27,6 +27,7 @@ namespace ProjektZtp
         private void InitializeComponents()
         {
             Size = new Size(1400, 1200);
+            BackColor = Color.Transparent;
         }
 
         private void InitializeBoards()
@@ -38,8 +39,8 @@ namespace ProjektZtp
             {
                 Text = "Player Board",
                 Location = new Point(
-                    (Width - totalWidth * 2 - 50) / 2, // Wyśrodkowanie względem szerokości MainGameControl
-                    (Height - playerBoard.boardSize * CellSize - 20) / 2 // Wyśrodkowanie względem wysokości
+                    (Width - totalWidth * 2 - 50) / 2,
+                    (Height - playerBoard.boardSize * CellSize - 20) / 2
                 ),
                 Size = new Size(playerBoard.boardSize * CellSize + 20, playerBoard.boardSize * CellSize + 20)
             };
@@ -59,13 +60,12 @@ namespace ProjektZtp
 
             Controls.Add(playerBoardGroup);
 
-            // Wyśrodkowanie planszy przeciwnika
             GroupBox enemyBoardGroup = new GroupBox
             {
                 Text = "Enemy Board",
                 Location = new Point(
-                    playerBoardGroup.Right + 30, // Ustawienie z odstępem od planszy gracza
-                    playerBoardGroup.Top // Ta sama pozycja pionowa co plansza gracza
+                    playerBoardGroup.Right + 30,
+                    playerBoardGroup.Top
                 ),
                 Size = new Size(enemyBoard.boardSize * CellSize + 20, enemyBoard.boardSize * CellSize + 20)
             };

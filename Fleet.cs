@@ -7,31 +7,17 @@ using System.Threading.Tasks;
 
 namespace ProjektZtp
 {
-    public abstract class FleetComponent
+    public interface FleetComponent
     {
-        public abstract string Name { get; }
-        public abstract int Size { get; }
-
-        public virtual void Add(FleetComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Remove(FleetComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual List<FleetComponent> GetComponents()
-        {
-            throw new NotImplementedException();
-        }
+        string Name { get; }
+        int Size { get; }
+        bool isSunk();
     }
 
     public abstract class Ship : FleetComponent
     {
-        public override string Name { get; }
-        public override abstract int Size { get; }
+        public string Name { get; }
+        public abstract int Size { get; }
         public List<Cell> Cells { get; } = new List<Cell>();
 
         protected Ship(string name)
@@ -98,15 +84,11 @@ namespace ProjektZtp
     {
         public readonly List<FleetComponent> _components = new List<FleetComponent>();
 
-        public override string Name { get; }
+        public string Name { get; }
 
         public bool isSunk()
         {
-            foreach(Ship ship in _components)
-            {
-                if(!ship.isSunk()) return false;
-            }
-            return true;
+            return _components.All(component => component.isSunk());
         }
 
         public Fleet(string name)
@@ -114,19 +96,19 @@ namespace ProjektZtp
             Name = name;
         }
 
-        public override int Size => _components.Sum(component => component.Size);
+        public int Size => _components.Sum(component => component.Size);
 
-        public override void Add(FleetComponent component)
+        public void Add(FleetComponent component)
         {
             _components.Add(component);
         }
 
-        public override void Remove(FleetComponent component)
+        public void Remove(FleetComponent component)
         {
             _components.Remove(component);
         }
 
-        public override List<FleetComponent> GetComponents()
+        public List<FleetComponent> GetComponents()
         {
             return _components;
         }
